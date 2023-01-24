@@ -3,12 +3,18 @@
   <head>
     <meta charset="utf-8">
     <title>{{ page.title }}</title>
+    <script src="https://kit.fontawesome.com/b421b17ab8.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/assets/css/style.css">
     {% feed_meta %}
-    {% seo %}
+    {% seo %} 
   </head>
   <body>
     {%- include header.html -%}
-    {{ content }}
+    <div class="Content">
+      {{ content }}
+    </div>  
+    <div class="Footer">
+      {%- include footer.html -%}
+  </div>
   </body>
 </html>
