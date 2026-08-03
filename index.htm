@@ -1,8 +1,555 @@
+<!doctype html>
+<html lang="en">
 <head>
-	georgewinser.com
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Portfolio of George Winser, a software engineer specialising in .NET.">
+  <title>George Winser | Software Engineer</title>
+  <style>
+    :root {
+      --background: #090d1a;
+      --surface: #12192b;
+      --surface-light: #19233b;
+      --text: #eff3ff;
+      --muted: #a8b4cd;
+      --blue: #62a5ff;
+      --violet: #a98cff;
+      --line: rgba(161, 184, 230, 0.18);
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--background);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+
+    body::before {
+      position: fixed;
+      z-index: -1;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(98, 165, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(98, 165, 255, 0.035) 1px, transparent 1px);
+      background-size: 48px 48px;
+      content: "";
+      mask-image: linear-gradient(to bottom, black, transparent 75%);
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .container {
+      width: min(calc(100% - 3rem), var(--max-width));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      padding: 1.5rem 0;
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .monogram {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.5rem;
+      height: 2.5rem;
+      border: 1px solid rgba(98, 165, 255, 0.55);
+      border-radius: 0.55rem;
+      background: linear-gradient(135deg, rgba(98, 165, 255, 0.16), rgba(169, 140, 255, 0.12));
+      color: var(--text);
+      font-weight: 800;
+      letter-spacing: -0.08em;
+      text-decoration: none;
+    }
+
+    .site-nav {
+      display: flex;
+      gap: 1.5rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .site-nav a {
+      text-decoration: none;
+    }
+
+    .site-nav a:hover,
+    .site-nav a:focus-visible {
+      color: var(--blue);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.35fr 0.65fr;
+      align-items: center;
+      min-height: 70vh;
+      padding: 5rem 0 7rem;
+      gap: 3rem;
+    }
+
+    .eyebrow,
+    .section-label {
+      margin: 0 0 1rem;
+      color: var(--blue);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1 {
+      max-width: 800px;
+      margin-bottom: 1.5rem;
+      font-size: clamp(3rem, 8vw, 6.2rem);
+      letter-spacing: -0.07em;
+      line-height: 0.95;
+    }
+
+    .accent {
+      background: linear-gradient(90deg, var(--blue), var(--violet));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .intro {
+      max-width: 650px;
+      color: var(--muted);
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 2rem;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 2.8rem;
+      padding: 0.6rem 1rem;
+      border-radius: 0.45rem;
+      background: linear-gradient(110deg, var(--blue), var(--violet));
+      color: #070b15;
+      font-size: 0.9rem;
+      font-weight: 800;
+      text-decoration: none;
+    }
+
+    .button-secondary {
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--text);
+    }
+
+    .signal-card {
+      padding: 1.5rem;
+      border: 1px solid var(--line);
+      border-radius: 0.8rem;
+      background: rgba(18, 25, 43, 0.85);
+      box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.2);
+    }
+
+    .signal-card::before {
+      display: block;
+      width: 2.5rem;
+      height: 0.18rem;
+      margin-bottom: 1.5rem;
+      border-radius: 1rem;
+      background: linear-gradient(90deg, var(--blue), var(--violet));
+      content: "";
+    }
+
+    .signal-card p {
+      color: var(--muted);
+    }
+
+    .signal-card strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      font-size: 1.35rem;
+    }
+
+    .section {
+      padding: 6rem 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-heading {
+      display: grid;
+      grid-template-columns: 0.7fr 1.3fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    h2 {
+      margin-bottom: 0;
+      font-size: clamp(2rem, 4vw, 3.3rem);
+      letter-spacing: -0.05em;
+      line-height: 1;
+    }
+
+    .section-heading > p {
+      max-width: 610px;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .card {
+      min-height: 13rem;
+      padding: 1.5rem;
+      border: 1px solid var(--line);
+      border-radius: 0.8rem;
+      background: var(--surface);
+    }
+
+    .card h3 {
+      margin-bottom: 0.6rem;
+      font-size: 1.1rem;
+    }
+
+    .card p {
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .placeholder {
+      position: relative;
+      border-style: dashed;
+      background:
+        linear-gradient(135deg, rgba(98, 165, 255, 0.06), transparent 60%),
+        var(--surface);
+    }
+
+    .placeholder::after {
+      display: inline-block;
+      margin-top: 1.2rem;
+      padding: 0.22rem 0.45rem;
+      border: 1px solid rgba(169, 140, 255, 0.35);
+      border-radius: 0.25rem;
+      color: var(--violet);
+      content: "Content placeholder";
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 10rem 1fr;
+      gap: 1.5rem;
+      padding: 1.5rem;
+      border-left: 2px solid var(--violet);
+      background: var(--surface);
+    }
+
+    .timeline-meta {
+      color: var(--blue);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.8rem;
+    }
+
+    .timeline-item h3 {
+      margin-bottom: 0.35rem;
+    }
+
+    .timeline-item p {
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .interest-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1rem;
+    }
+
+    .interest {
+      min-height: 11rem;
+      padding: 1.25rem;
+      border: 1px solid var(--line);
+      border-radius: 0.8rem;
+      background: var(--surface-light);
+    }
+
+    .interest-number {
+      display: block;
+      margin-bottom: 2rem;
+      color: var(--violet);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.8rem;
+    }
+
+    .interest h3 {
+      margin-bottom: 0;
+      font-size: 1rem;
+    }
+
+    .contact {
+      padding: 6rem 0 7rem;
+      text-align: center;
+    }
+
+    .contact h2 {
+      max-width: 750px;
+      margin: 0 auto 1.25rem;
+    }
+
+    .contact p {
+      max-width: 570px;
+      margin: 0 auto 2rem;
+      color: var(--muted);
+    }
+
+    .contact-note {
+      color: var(--violet);
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 0.8rem;
+    }
+
+    .site-footer {
+      padding: 2rem 0;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 780px) {
+      .site-nav {
+        gap: 0.9rem;
+      }
+
+      .hero,
+      .section-heading {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 3.5rem 0 5rem;
+      }
+
+      .signal-card {
+        max-width: 28rem;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .timeline-item {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+      }
+
+      .interest-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 450px) {
+      .container {
+        width: min(calc(100% - 2rem), var(--max-width));
+      }
+
+      .site-nav {
+        font-size: 0.8rem;
+      }
+
+      .interest-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
-<div>
-	This is a website
-</div>
-	</body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="monogram" href="/" aria-label="George Winser home">GW</a>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="#about">About</a>
+        <a href="#experience">Experience</a>
+        <a href="#interests">Interests</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="container hero" id="about">
+      <div>
+        <p class="eyebrow">Senior software developer / 11 years experience</p>
+        <h1>Building dependable <span class="accent">.NET software.</span></h1>
+        <p class="intro">I'm George Winser, a senior software developer with 11 years of experience at GOb2b, primarily working across the .NET Framework and modern .NET stacks.</p>
+        <div class="hero-actions">
+          <a class="button" href="#experience">Explore my work</a>
+          <a class="button button-secondary" href="#interests">Away from the keyboard</a>
+        </div>
+      </div>
+      <aside class="signal-card" aria-label="Professional focus">
+        <p class="eyebrow">Currently focused on</p>
+        <strong>.NET &amp; .NET Framework</strong>
+        <p>Designing, improving, and maintaining software that people can rely on.</p>
+      </aside>
+    </section>
+
+    <section class="section" id="experience">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="section-label">01 / Experience</p>
+            <h2>Engineer by trade.</h2>
+          </div>
+          <p>Eleven years as a Senior Software Developer at <a href="https://www.gob2b.com/">GOb2b</a>, through July 2026, with a foundation in the .NET Framework and continued work in the evolving .NET ecosystem.</p>
+        </div>
+
+        <div class="card-grid">
+          <article class="card">
+            <h3>.NET Framework</h3>
+            <p>Long-term experience working with established .NET applications and the systems that support them.</p>
+          </article>
+          <article class="card">
+            <h3>Modern .NET</h3>
+            <p>Building on a solid platform background with current .NET technologies and practices.</p>
+          </article>
+          <article class="card placeholder">
+            <h3>Core skills</h3>
+            <p>Add your primary languages, frameworks, tooling, practices, and specialist knowledge here.</p>
+          </article>
+        </div>
+
+        <div class="timeline" style="margin-top: 3rem;">
+          <article class="timeline-item">
+            <div class="timeline-meta">Aug 2015 — Jul 2026</div>
+            <div>
+              <h3>Senior Software Developer / GOb2b</h3>
+              <p>Eleven years of software development experience across the .NET Framework and modern .NET stacks.</p>
+            </div>
+          </article>
+          <article class="timeline-item placeholder">
+            <div class="timeline-meta">Your dates</div>
+            <div>
+              <h3>Your role / Company</h3>
+              <p>Add another notable position, achievement, or career milestone here.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="section-label">02 / Selected work</p>
+            <h2>Projects to share.</h2>
+          </div>
+          <p>This space is ready for the products, platforms, open-source work, or personal projects that best demonstrate how you work.</p>
+        </div>
+        <div class="card-grid">
+          <article class="card placeholder">
+            <h3>Project name</h3>
+            <p>Describe the problem, the approach you took, the technology involved, and the result.</p>
+          </article>
+          <article class="card placeholder">
+            <h3>Project name</h3>
+            <p>Add another project or case study that you are proud to put your name to.</p>
+          </article>
+          <article class="card placeholder">
+            <h3>Project name</h3>
+            <p>Use this card for a personal build, open-source contribution, or a further achievement.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="interests">
+      <div class="container">
+        <div class="section-heading">
+          <div>
+            <p class="section-label">03 / Beyond code</p>
+            <h2>Always curious.</h2>
+          </div>
+          <p>Good engineering benefits from time spent thinking differently. These are the things that keep me energised and inspired outside of work.</p>
+        </div>
+        <div class="interest-grid">
+          <article class="interest">
+            <span class="interest-number">01</span>
+            <h3>Video gaming</h3>
+          </article>
+          <article class="interest">
+            <span class="interest-number">02</span>
+            <h3>Board gaming</h3>
+          </article>
+          <article class="interest">
+            <span class="interest-number">03</span>
+            <h3>Music</h3>
+          </article>
+          <article class="interest">
+            <span class="interest-number">04</span>
+            <h3>RC aircraft</h3>
+          </article>
+          <article class="interest">
+            <span class="interest-number">05</span>
+            <h3>Family time</h3>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="container contact" id="contact">
+      <p class="section-label">04 / Get in touch</p>
+      <h2>Let's build something dependable.</h2>
+      <p>Interested in working together? My contact details will be added here soon.</p>
+      <span class="contact-note">Contact details placeholder</span>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">© George Winser</div>
+  </footer>
+</body>
+</html>
