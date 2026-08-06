@@ -101,6 +101,10 @@
       text-decoration: none;
     }
 
+    .site-nav a[aria-current="true"] {
+      color: var(--blue);
+    }
+
     .site-nav a:hover,
     .site-nav a:focus-visible {
       color: var(--blue);
@@ -793,5 +797,96 @@
   <footer class="site-footer">
     <div class="container">© George Winser</div>
   </footer>
+  <script>
+    (() => {
+      const navLinks = Array.from(document.querySelectorAll('.site-nav a[href^="#"]'));
+      const sectionIds = navLinks.map(link => link.getAttribute("href")?.slice(1)).filter(Boolean);
+      const sections = sectionIds
+        .map(id => document.getElementById(id))
+        .filter(Boolean);
+
+      if (!navLinks.length || !sections.length) {
+        return;
+      }
+
+      const setActiveLink = (id) => {
+        for (const link of navLinks) {
+          const isActive = link.getAttribute("href") === `#${id}`;
+          if (isActive) {
+            link.setAttribute("aria-current", "true");
+          } else {
+            link.removeAttribute("aria-current");
+          }
+        }
+      };
+
+      const viewportTop = () => window.scrollY || window.pageYOffset || 0;
+      const nearBottom = () => {
+        return window.innerHeight + viewportTop() >= document.documentElement.scrollHeight - 2;
+      };
+
+      const getNearestSectionId = () => {
+        if (viewportTop() <= 4) {
+          return sections[0].id;
+        }
+
+        if (nearBottom()) {
+          return sections[sections.length - 1].id;
+        }
+
+        const offset = 120;
+        let activeId = sections[0].id;
+
+        for (const section of sections) {
+          if (section.offsetTop - offset <= viewportTop()) {
+            activeId = section.id;
+          } else {
+            break;
+          }
+        }
+
+        return activeId;
+      };
+
+      let currentId = getNearestSectionId();
+      setActiveLink(currentId);
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          const visibleEntries = entries
+            .filter(entry => entry.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+          if (visibleEntries.length > 0) {
+            currentId = visibleEntries[0].target.id;
+          } else {
+            currentId = getNearestSectionId();
+          }
+
+          setActiveLink(currentId);
+        },
+        {
+          root: null,
+          rootMargin: "-80px 0px -55% 0px",
+          threshold: [0, 0.2, 0.5, 1]
+        }
+      );
+
+      for (const section of sections) {
+        observer.observe(section);
+      }
+
+      const onScrollOrResize = () => {
+        const nextId = getNearestSectionId();
+        if (nextId !== currentId) {
+          currentId = nextId;
+          setActiveLink(currentId);
+        }
+      };
+
+      window.addEventListener("scroll", onScrollOrResize, { passive: true });
+      window.addEventListener("resize", onScrollOrResize);
+    })();
+  </script>
 </body>
 </html>
